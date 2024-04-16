@@ -1,0 +1,52 @@
+<div class="container" *ngIf="!showResult">
+  <div *ngIf="!onShow">
+    <h3>Instructions:</h3>
+    <ul class="note">
+      <li>Each question is of 5 marks with negative marking of -1.</li>
+      <li>It is compulsory to attempt all the questions.</li>
+      <li>Only one option is correct.</li>
+    </ul>
+  </div>
+  <br>
+  <div class="card card-body" style="width:80%;" *ngFor="let question of questions; let i = index">
+    <h4><i>Q{{i+1}} {{question.question}}</i></h4>
+    <div *ngFor="let option of question.options; let j = index">
+      <input class="form-check-input" type="radio" [id]="'question_' + question.id + '_option_' + j"
+        name="question_group_{{ question.id }}" [(ngModel)]="question.response" [value]="option">
+      <label style="margin-left:5px;" [for]="'question_' + question.id + '_option_' + j">{{ option }}</label><br>
+    </div>
+    <br>
+  </div>
+  <button class="btn btn-success" (click)="onSubmit()">Submit</button>
+</div>
+
+<div class="container" *ngIf="showResult">
+  <h4 class="custom">Point: {{ score }}</h4>
+  <table class="table">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">SNo</th>
+        <th scope="col">Question</th>
+        <th scope="col">Correct Answer</th>
+        <th scope="col">Marks Obtained</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let question of questions; let i = index">
+        <td scope="row">Q{{ i + 1 }}</td>
+        <td [ngClass]="{'red-bg': !question.response, 'green-bg': question.response}">{{ question.question }}</td>
+        <td><i>{{ question.correctAnswer }}</i></td>
+        <td [ngClass]="{'red-bg': !question.response, 'green-bg': question.response}">{{ question.scores }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td><b>Total</b></td>
+        <td></td>
+        <td></td>
+        <td><b>{{score}}</b></td>
+      </tr>
+    </tfoot>
+  </table>
+  <button id="mybutton" class="btn btn-primary" (click)="retry()">Retry</button>
+</div>
